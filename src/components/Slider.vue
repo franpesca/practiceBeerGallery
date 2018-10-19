@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-carousel class="bomber-slider-wrapper" img-height="480px" id="carousel1" style="box-shadow: 1px 1px 2px #333; background-color: rgba(0, 128, 0, 0.646);" controls indicators :interval="4000" img-width="1024" v-model="slide" @sliding-start="onSlideStart" @sliding-end="onSlideEnd">
+    <b-carousel class="bomber-slider-wrapper" img-height="480px" id="carousel1" style="box-shadow: 1px 1px 2px #333; background-color: rgb(158, 184, 193);" controls indicators :interval="4000" img-width="1024" v-model="slide" @sliding-start="onSlideStart" @sliding-end="onSlideEnd">
       <b-carousel-slide v-for="(favouriteBeer, index) in favouriteBeers" :key="index" class="lallala" :img-src="favouriteBeer.image_url">
       </b-carousel-slide>
     </b-carousel>

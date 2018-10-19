@@ -1,9 +1,11 @@
 <template>
   <div>
     <div id="nav">
+      
       <router-link to="/">Home</router-link><br>
-      <router-link to="/favouritelist">Your favourite beers</router-link><br>
-      <button class="btn btn-link" @click="activateClick"> Beer Menu</button>
+      <br>
+      <router-link to="/favouritelist">Your favourite beers</router-link><br><br>
+      <button class="btn btn-link" @click="activateClick"> Beer List</button>
       <div class="hello">
         <ul v-show="isClicked">
           <li v-for="(beer, index) in beers" :key="index"><a :href="'#' + beer.id">{{beer.name}}</a></li>
@@ -57,14 +59,10 @@
   @mixin ul-details {
     list-style-type: none;
     padding: 0;
-    // padding-left: 10px;
     text-align: left;
     font-size: 13px;
-    // margin-left: 2%;
     max-width: 200px;
-    background-color: #faf0d8;
-    color: blue !important;
-    font-weight: 100 !important;
+    background-color:whitesmoke;
     &.active {
       display: block;
     }
@@ -74,6 +72,7 @@
     color: black;
      :active {
       color: blue;
+      margin-bottom : 20px;
     }
     font-weight: bold;
     text-decoration: none;
@@ -81,6 +80,7 @@
   
   router-link {
     color: black;
+    margin-bottom: 20px;
   }
   
   ul {
@@ -92,7 +92,7 @@
   }
   
   .hello {
-    height: 70vh;
+    height: 65vh;
     overflow-y: scroll;
   }
 </style>

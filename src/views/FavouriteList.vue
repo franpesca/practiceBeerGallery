@@ -2,8 +2,6 @@
   <div class="wrapper">
     <h1> Your fav beers</h1>
     <div id="nav">
-      <!-- <router-link to="/">Home  |  </router-link> 
-          <router-link to="/favouritelist">Your favourite beers</router-link> -->
     </div>
     <Slider></Slider>
   </div>
@@ -31,17 +29,6 @@
   //   this.isToggleActive = !this.isToggleActive;
   // }
   
-  // created() {
-  //   this.axios.get('http://localhost:3000/api/beers')
-  //     .then(res => res.data)
-  //     .then((res) => {
-  //       console.log(res, 'YOU R A BOMBER')
-  //       let randomBeers = res.sort(() => .5 - Math.random()).slice(0, 9)
-  //       console.log('random', randomBeers)
-  
-  //       this.$store.state.favBeers = randomBeers
-  //     })
-  // }
 </script>
 
 <style lang="scss" scoped>
@@ -68,10 +55,10 @@
       color: rgb(193, 3, 3);
       margin-bottom: -1%;
       font-weight: bold;
-      background-color: rgb(132, 129, 116);
+      background-color: whitesmoke;
     }
     .miao {
-      background-color: rgb(132, 129, 116);
+      background-color:whitesmoke;
       .your-fav-list {
         margin-top: 3%;
         display: flex;

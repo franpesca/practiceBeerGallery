@@ -54,7 +54,7 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: whitesmoke;
-    background-color: #faf0d8;
+    background-color:whitesmoke;
   }
   
   #nav {

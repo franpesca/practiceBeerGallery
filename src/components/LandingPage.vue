@@ -36,7 +36,7 @@
         white-space: pre-wrap;
         color: white(14, 14, 14);
         font-weight: bold;
-        color: rgb(193, 3, 3);
+        color: rgb(0, 45, 157);
       }
     }
     &.bg-center-image {
@@ -47,7 +47,7 @@
       background-image: url('./../assets/alcohol.jpg');
       position: relative;
       .bg-gradient {
-        background-image: linear-gradient(90deg, rgba(250, 220, 69, 0.425) 0%, rgba(12, 6, 7, 0.678) 100%), url("/../../asset/beer.jpg");
+        background-image: linear-gradient(90deg, rgba(231, 249, 247, 0.425) 0%, rgba(12, 6, 7, 0.678) 100%), url("/../../asset/beer.jpg");
         width: 100%;
         height: 100%;
         position: absolute;
