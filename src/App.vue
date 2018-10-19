@@ -55,6 +55,7 @@
     text-align: center;
     color: whitesmoke;
     background-color:whitesmoke;
+    min-height: 100vh;
   }
   
   #nav {

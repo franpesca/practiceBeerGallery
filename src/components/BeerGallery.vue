@@ -5,7 +5,7 @@
             <p>Wanna narrow down your selection? No probs..Filter it down!</p>
             <div>
                 <b-form-select v-validate="{required: true}" name="myinput" v-model="selected" :options="options" class="mb-3" />
-                <p class="red-text" v-if="errors.first('myinput')">Please, select an option from the above list</p>
+                <p class="form-validation" v-if="errors.first('myinput')">Please, select an option from the above list</p>
                 <!-- {{errors.has('myinput')}} {{isSubmitted}} -->
             </div>
             <br>
@@ -16,10 +16,16 @@
                 </div>
                 <br>
             </b-input-group>
-            <p v-if="errors.first('required_field')"> Please, type a valid number</p>
+            <p class="form-validation" v-if="errors.first('required_field')"> Please, type a valid number</p>
+        </div>
+        <div class="pagination">
+            <b-pagination v-if="!loading && beers.lenght > 0 " @change="changeinpagination" align="center" size="md" :total-rows="10" v-model="currentPage" :per-page="10">
+            </b-pagination>
+            
         </div>
         <div class="container-input-selectedbeers">
             <div class="sync-wrapper" v-if="loading">
+                <p>lallero {{currentPage}}</p>
                 <sync-loader class="loader" :loading="loading"></sync-loader>
             </div>
             <div class="container-beers" v-else>
@@ -102,12 +108,14 @@
             ],
             galleryBeers: [],
             selectedBeera: {},
+            currentPage: 1,
         }),
     
         computed: {
             ...mapGetters({
                 beers: 'getBeers',
-                loading: 'getBeersLoading'
+                loading: 'getBeersLoading',
+                
             })
         },
         methods: {
@@ -149,12 +157,14 @@
                     }
                 })
             },
-            addToFav() {},
-            created() {
-                this.$store.dispatch('getBeerData')
+            changeInpagination(){
+                this.$store.dispatch('getBeerData', this.currentPage)
             },
-    
-        }
+            addToFav() {},
+        },
+        created() {
+            this.$store.dispatch('getBeerData', this.currentPage)
+        },
     }
 </script>
 
@@ -162,6 +172,9 @@
     .text-container {
         width: 40%;
         margin: 0 auto;
+        .form-validation {
+            color: red;
+        }
         h3,
         p {
             color: black;

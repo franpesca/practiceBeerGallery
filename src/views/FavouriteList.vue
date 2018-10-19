@@ -52,7 +52,7 @@
       font-family: 'Charmonman', cursive;
       font-size: 50px;
       white-space: pre-wrap;
-      color: rgb(193, 3, 3);
+      color: rgb(0, 45, 157);
       margin-bottom: -1%;
       font-weight: bold;
       background-color: whitesmoke;

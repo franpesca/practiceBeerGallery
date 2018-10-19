@@ -7,10 +7,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    //nav manu
     beers: [],
-
-    //slider
     favouriteBeerImage_url: '',
     favouriteBeers: [],
     beersLoading: false,
@@ -18,9 +15,8 @@ const store = new Vuex.Store({
 
   getters: {
     getBeers: state => state.beers,
-    // getInputValue: state => state.inputValue,
     getFavouriteBeers: state => state.favouriteBeers,
-    getBeersLoading: state => state.beersLoading
+    getBeersLoading: state => state.beersLoading,
   },
 
   mutations: {
@@ -38,12 +34,13 @@ const store = new Vuex.Store({
     },
     SET_LOADING(state, payload) {
       state.beersLoading = payload;
-    }
+    },
   },
   actions: {
-    getBeerData({ commit }) {
+    getBeerData({ commit }, pag) {
       commit('SET_LOADING', true);
-      axios.get(`https://api.punkapi.com/v2/beers?page=2&per_page=80`)
+      console.log(pag)
+      axios.get(`https://api.punkapi.com/v2/beers?page=${pag}&per_page=80`)
         .then(res => res.data)
         .then(res => {
           commit('SET_BEERS', res)
@@ -73,7 +70,7 @@ const store = new Vuex.Store({
         .finally(() => {
           commit('SET_LOADING', false);
         });
-    }
+    },
   }
 })
 
