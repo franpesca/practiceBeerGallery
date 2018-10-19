@@ -1,0 +1,286 @@
+<template>
+    <div>
+        <div class="text-container">
+            <h3>Our flavoured beer gallery!</h3>
+            <p>Wanna narrow down your selection? No probs..Filter it down!</p>
+    
+            <div>
+                <b-form-select v-validate="{required: true}" name="myinput" v-model="selected" :options="options" class="mb-3" />
+                <span v-if="isSubmitted && errors.first('myinput')">
+                                                                    Please, select an option from the above list</span>
+                <!-- {{errors.has('myinput')}} {{isSubmitted}} -->
+            </div>
+            <br>
+            <b-input-group size="sm">
+                <b-form-input v-validate="{required: true, alpha_num: true}" name="required_field" @keydown.enter.native="filterArray(selected,InputValue)" placeholder="type here a value" v-model="inputValue"></b-form-input>
+                <div>
+                    <b-button class="btn btn-primary button" size="sm" variant="outline-success" @click.prevent="filterArray(selected,inputValue)"> enter </b-button>
+                </div>
+                <br>
+            </b-input-group>
+            <span v-if="isSubmitted && errors.first('required_field')"> Please, type a valid number</span>
+        </div>
+        <div class="sync-wrapper" v-if="loading">
+            <sync-loader class="loader" :loading="loading"></sync-loader>
+        </div>
+        <div class="container-beers" v-else>
+            <div class="card" v-for="(beer, index) in beers" :key="index" :id="beer.id">
+                <div @click="setSelected(beer)">
+                    <b-button class="b-button" @click="showModal">
+                        <div class="img-container">
+                            <img class="beer" :src="beer.image_url" alt="beer_image">
+                        </div>
+                    </b-button>
+                </div>
+            </div>
+            <b-modal class="modale-" header-text-variant="dark" ref="myModalRef" hide-footer title="Beer Details">
+                <div class="d-block text-center">
+                    <div class="beer-wrapper">
+                        <div class="img-container">
+                            <img class="beer" :src="selectedBeera.image_url" alt="beer_image">
+                        </div>
+                        <div class="info-container">
+                            <h4> {{ selectedBeera.name }} </h4>
+    
+                            <p> {{ selectedBeera.description }} </p>
+                        </div>
+                    </div>
+                </div>
+                <b-btn class="mt-3" id="browse" block @click="hideModal">Let me browse some more</b-btn>
+                <div @click="addToFav">
+                    <b-btn button-size="small" class="mt-3" id="addTo" block @click="hideModal">Add to my favourite</b-btn>
+                </div>
+            </b-modal>
+        </div>
+    </div>
+</template>
+
+<script>
+    import {
+        Vue
+    } from "vue-property-decorator";
+    import BootstrapVue from "bootstrap-vue";
+    import SyncLoader from 'vue-spinner/src/SyncLoader.vue';
+    import {
+        Validator
+    } from 'vee-validate';
+    import {
+        mapMutations,
+        mapState,
+        mapGetters
+    } from 'vuex';
+    
+    export default {
+        components: {
+            SyncLoader
+        },
+        data: () => ({
+            inputValue: '',
+            selected: null,
+            options: [{
+                    value: null,
+                    text: 'Please select an option',
+                    disabled: true
+                },
+                {
+                    value: 'abv_lt',
+                    text: 'Returns all beers with ABV less than the supplied number'
+                },
+                {
+                    value: 'ibu_lt',
+                    text: 'Returns all beers with IBU less than the supplied number'
+                },
+                {
+                    value: 'ebc:lt',
+                    text: 'Returns all beers with EBC less than the supplied number'
+                },
+                {
+                    value: 'beer_name',
+                    text: 'Returns all beers matching the supplied name'
+                }
+            ],
+            galleryBeers: [],
+            selectedBeera: {},
+            loading: false,
+            isSubmitted: false,
+            beers: [],
+        }),
+    
+        computed: {
+            // ...mapGetters({
+            //     beers: 'getBeers',
+            // })
+        },
+        methods: {
+            setSelected(beer) {
+                this.selectedBeera = beer;
+            },
+            showModal() {
+                this.$refs.myModalRef.show();
+            },
+            hideModal() {
+                this.$refs.myModalRef.hide();
+            },
+    
+            filterArray(filterType, inputValue) {
+                // if (!this.inputValue | !this.selected) return alert("Please, select and option and type a value")
+                this.isSubmitted = true;
+                this.$validator.validate().then(valid => {
+                    console.log(valid)
+                    if (valid) {
+    
+                        this.loading = true;
+    
+                        console.log("entrata in filter array");
+                        console.log(this.inputValue, this.filterType)
+                        this.axios
+                            .get(`https://api.punkapi.com/v2/beers?${filterType}=${inputValue}`)
+                            .then(res => res.data)
+                            .then(res => {
+                                console.log(filterType, "filtrato");
+                                console.log(res, "chiamata get filtrata");
+                                this.beers = res;
+                            })
+                            .finally(() => {
+                                this.loading = false
+                            });
+                        console.log("arriva qui?");
+                        this.inputValue = '';
+                        console.log(this.inputValue, 'inputvalue')
+                        this.selected = null;
+                        this.isSubmitted = false;
+    
+                    }
+                })
+            },
+            addToFav() {},
+            // created() {
+            //     this.$store.dispatch('getBeerData')
+            // },
+            created() {
+                this.axios
+                    .get("https://api.punkapi.com/v2/beers?page=2&per_page=80")
+                    .then(res => res.data)
+                    .then(res => {
+                        console.log(res, "chiamata get normale");
+                        this.beers = res;
+                    });
+    
+            }
+        }
+    }
+</script>
+
+<style lang="scss">
+    .text-container {
+        color: rgb(193, 3, 3);
+        width: 40%;
+        margin: 0 auto;
+        h3,
+        p {
+            color: black;
+        }
+        & h3 {
+            text-transform: uppercase;
+            margin-top: 10%;
+            margin-bottom: 5%;
+        }
+    }
+    
+    .sync-wrapper {
+        min-height: 200px;
+        .loader {
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+    }
+    
+    .container-beers {
+        margin-top: 3%;
+        width: 100% !important;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-content: space-between;
+        align-items: flex-start;
+        background-color: #faf0d8;
+        .b-button {
+            background-color: transparent !important;
+            border: none;
+            &:focus {
+                border: none;
+            }
+            &:active {
+                border: none;
+            }
+            &:hover {
+                background-color: green;
+            }
+        }
+        .card {
+            width: 20%;
+            padding: 2.5%;
+            line-height: 1.6;
+            background-color: transparent;
+            border: none;
+            &:hover {
+                background-color: rgba(0, 128, 0, 0.646);
+                opacity: 0.8;
+                border-radius: 50%;
+            }
+            &:focus {
+                border: none;
+            }
+            &.active {
+                border: none;
+            }
+            img {
+                height: 200px;
+                object-fit: contain;
+                align-self: center;
+            }
+            p {
+                text-align: center;
+                &:hover {
+                    opacity: 0.5;
+                }
+            }
+            .description-container {
+                height: 130px;
+                overflow-y: scroll;
+            }
+        }
+    }
+    
+    .beer-wrapper {
+        display: flex;
+        align-items: center;
+        color: black;
+        .img-container {
+            flex: 1;
+            .beer {
+                height: 200px;
+                object-fit: contain;
+                align-self: center;
+            }
+        }
+        .info-container {
+            flex: 2;
+        }
+    }
+    
+    .modeale- {
+        background-color: #faf0d8 !important;
+        .mt-3 {
+            #browse {
+                background-color: cadetblue !important;
+            }
+            #addTo {
+                background-color: rgb(22, 181, 22) !important;
+            }
+        }
+    }
+</style>
+
+
+
