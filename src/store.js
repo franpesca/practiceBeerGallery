@@ -11,6 +11,7 @@ const store = new Vuex.Store({
     favouriteBeerImage_url: '',
     favouriteBeers: [],
     beersLoading: false,
+    // url: n,
   },
 
   getters: {
@@ -24,8 +25,9 @@ const store = new Vuex.Store({
     //   return state.isShown = !state.isShown
     //per chiamare le mutations: this.$store.commit('toggle, payload= qualcosa che passo io)
     // },
-
-    //nav menu
+    SET_URL(state, payload){
+      state.url=payload
+    },
     SET_BEERS(state, payload) {
       state.beers = payload
     },
@@ -39,10 +41,11 @@ const store = new Vuex.Store({
   actions: {
     getBeerData({ commit }, pag) {
       commit('SET_LOADING', true);
-      console.log(pag)
+      console.log(pag, 'page in store')
       axios.get(`https://api.punkapi.com/v2/beers?page=${pag}&per_page=80`)
         .then(res => res.data)
         .then(res => {
+          console.log(res, 'res')
           commit('SET_BEERS', res)
           commit('SET_LOADING', false);
           //quando committo devo sempte mettere lo tato- l azione che committo e il payload. senza
@@ -60,6 +63,9 @@ const store = new Vuex.Store({
         })
     },
     filterBeers({ commit }, filterObj) {
+      const url = filterObj 
+        ? `https://api.punkapi.com/v2/beers?${filterObj.filterType}=${filterObj.inputValue}` 
+        : `https://api.punkapi.com/v2/beers?page=1&per_page=80`;
       commit('SET_LOADING', true);
       axios
         .get(`https://api.punkapi.com/v2/beers?${filterObj.filterType}=${filterObj.inputValue}`)

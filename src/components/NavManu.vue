@@ -28,7 +28,6 @@
   export default {
     name: 'NavManu',
     data: () => ({
-      // beers: [],
       isClicked: false,
     }),
     computed: {
@@ -38,20 +37,12 @@
       //ora che ho mappato i getters posso chiamarli con il this (i.e this.beers)
     },
     methods: {
-      ...mapActions({
-        getBeerData: 'getBeerData'
-      }),
       activateClick() {
         this.isClicked = !this.isClicked
         console.log(this.beers)
       },
     },
-      created() {
-        console.log(this)
-        this.$store.dispatch('getBeerData')
       
-      
-      },
   }
 </script>
 
