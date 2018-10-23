@@ -23,11 +23,12 @@
                 <p class="form-validation" v-if="errors.first('required_field')"> Please, type a valid number</p>
             </div>
             <div class="pagination">
-                 <button @click="prev" :disabled="currentPage === 1">Prev</button>
-                 <button @click="next" :disabled="beers.length < 80">Next</button>
-                <br>
-                <!-- <p>{{url}}</p> -->
+                <b-button class="btn btn-primary button" variant="outline-success" @click="prev" :disabled="currentPage === 1">Prev</b-button>
                 <p>Current Page: {{currentPage}}</p>
+                <b-button class="btn btn-primary button" variant="outline-success" @click="next" :disabled="beers.length < 80">Next</b-button>
+    
+                <!-- <p>{{url}}</p> -->
+    
                 <!-- <p> PageNum : {{pageNum}} </p> -->
             </div>
             <div class="container-input-selectedbeers">
@@ -180,7 +181,7 @@
                 this.currentPage += 1;
                 this.getBeerData(this.currentPage);
             },
-
+    
             prev() {
                 this.currentPage -= 1;
                 this.getBeerData(this.currentPage);
@@ -197,7 +198,7 @@
 <style lang="scss">
     .text-container {
         width: 40%;
-        margin: 0 auto;
+        margin: 0 auto 3% ;
         .form-validation {
             color: red;
         }
@@ -214,7 +215,9 @@
     
     .pagination {
         p {
-            color: black
+            color: black;
+            margin: 0 auto;
+            width: 30%;
         }
     }
     
